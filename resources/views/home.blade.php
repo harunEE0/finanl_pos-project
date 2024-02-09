@@ -1,70 +1,99 @@
-@extends('layouts.app') @section('content') 
-<div class="masthead-followup row m-0 text-center lead"> 
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "lapos";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connection successfully";
+
+    // Execute SQL query to get the count .
+    $cartSql = "SELECT COUNT(*) as casrts FROM carts";
+    $cartQuery = $conn->prepare($cartSql);
+    $cartQuery->execute();
+    $cartFetch = $cartQuery->fetch();
+
     
+    $productSql = "SELECT COUNT(*) as products FROM products";
+    $productQuery = $conn->prepare($productSql);
+    $productQuery->execute();
+    $productFetch = $productQuery->fetch();
+
+    $usersSql = "SELECT COUNT(*) as users FROM users";
+    $usersQuery = $conn->prepare($usersSql);
+    $usersQuery->execute();
+    $usersFetch = $usersQuery->fetch();
+
+    $salesSql = "SELECT COUNT(*) as sales FROM sales";
+    $salesQuery = $conn->prepare($salesSql);
+    $salesQuery->execute();
+    $salesFetch = $salesQuery->fetch(); 
+
+    $clientsql = "SELECT COUNT(*) as clients FROM clients ";
+    $clientQuery = $conn->prepare($clientsql);
+    $clientQuery->execute();
+    $clientFatch = $clientQuery->fetch();
 
 
-        
-    
-    <div class="col-12 col-md-6 p-3 text-left"> 
-        <!-- Sale & Revenue Start -->
-        <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">show1</p>
-                                <h6 class="pro_duct">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">show2</p>
-                                <h6 class="cus_tomer">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">show3</p>
-                                <h6 class="mb-0">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">show4</p>
-                                <h6 class="mb-0">$1234</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Sale & Revenue End -->    
-        </div>
-        
-        
-        <div class="col-12 col-md-3 p-3 text-left"> 
-            <h3 class="title" x-text="lpor"></h3> 
-            <ul> 
-                <li><a x-bind:href='sslugu1' x-text='sslug1' class="text-danger"></a></li>
-                <li><a x-bind:href='sslugu2' x-text='sslug2' class="text-danger"></a></li>
-                <li><a x-bind:href='sslugu3' x-text='sslug3' class="text-danger"></a></li>
-                <li><a x-bind:href='sslugu4' x-text='sslug4' class="text-danger"></a></li>
-            </ul> <h3 class="title" x-text="oss"></h3> <ul> <li><a x-bind:href='wbde' x-text='wbd' class="text-danger"></a></li>
-            <li><a x-bind:href='shop' x-text='shp' class="text-danger"></a></li><li><a x-bind:href='resto' x-text='rst' class="text-danger"></a></li>
-            <li><a x-bind:href='andro' x-text='and' class="text-danger"></a></li>
-        </ul>
-         <h3 class="title" x-text="opo"></h3> 
-         <ul> 
-            <li><a class="text-danger" x-bind:href='kasirs' x-text='kasir'></a></li></ul> 
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+?>
+
+@extends('layouts.app')
+@section('content')
+
+<div class="masthead-followup row m-0 text-center lead">
+    <div class="col-12 col-md-6 p-3 text-left">
+        <div class="graph">
+            <canvas id="myChart"></canvas> <!-- This canvas will be used by Chart.js to render the chart -->
         </div>
     </div>
-     @endsection
+
+    <div class="col-12 col-md-3 p-3 text-left">
+        <!-- Your HTML content -->
+    </div>
+</div>
+
+@endsection
+
+<!-- Script for Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the context of the canvas element
+        var ctx = document.querySelector('.graph canvas').getContext('2d');
+
+        // Define the data for the chart
+        var data = {
+            labels: ['carts', 'products', 'user', 'sale', 'client'],
+            datasets: [{
+                label: 'Dataset',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: [<?= $cartFetch['casrts'] ?>, <?= $productFetch['products'] ?>, <?= $usersFetch['users'] ?>, <?= $salesFetch['sales'] ?>,<?= $clientFatch['clients'] ?> ] 
+            }]
+        };
+
+        // Define options for the chart
+        var options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        // Create the chart
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    });
+</script>

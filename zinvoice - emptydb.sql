@@ -133,9 +133,12 @@ CREATE TABLE `products` (
   `price` double(8,2) UNSIGNED NOT NULL,
   `cost` double(8,2) UNSIGNED DEFAULT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL,
+  `picture` varchar(255) DEFAULT NULL, -- New column for storing picture file path or filename
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`product_id`),
+  CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf-8;
 
 -- --------------------------------------------------------
 
