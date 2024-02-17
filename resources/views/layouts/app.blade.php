@@ -69,7 +69,7 @@
       rptdm: "Report details menu", 
      
       xpr: "Export Report", 
-      pap: "Premium App", 
+     
       db: "Database", 
       papa: "https://lava.axcora.my.id/", 
       dbs: "Register Database in here", 

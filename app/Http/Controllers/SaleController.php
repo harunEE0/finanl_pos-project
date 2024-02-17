@@ -53,36 +53,46 @@ class SaleController extends Controller
      */
     public function store(SaleRequest $request)
     {
-        $sale = Sale::create(
-            [
-                'total'   => $request->input('total'),
-                'rfc'     => $request->input('rfc'),
-                'id'      => $request->input('id'),
-                'created' => date('Y-m-d')
-            ]
-        );
-
-        if (isset($sale)) {
-            $productsArray = (array)json_decode($request->input('products'));
+        $sale = Sale::create([
+            'total'   => $request->input('total'),
+            'rfc'     => $request->input('rfc'),
+            'id'      => $request->input('id'),
+            'created' => date('Y-m-d')
+        ]);
+    
+        if ($sale) {
+            $productsArray = (array) json_decode($request->input('products'));
             $completed = [];
-            //Get the products sales
+    
+            // Reduce the product_left value for each product sold
             foreach ($productsArray as $index) {
-                $cart = new Cart();
-                $cart->sale_id = $sale->sale_id;
-                $cart->product_id = $index->id;
-                $cart->amount = $index->amount;
-                $cart->created = date('Y-m-d');
-                $cart->save();
-                $completed[] = $cart;
+                $product = Product::find($index->id);
+                if ($product) {
+                    $quantitySold = $index->amount;
+                    if ($product->product_left >= $quantitySold) {
+                        $product->product_left -= $quantitySold;
+                        $product->save();
+                        $completed[] = $product;
+                    } else {
+                        // Handle the case where there aren't enough products left
+                        return new Response('Not enough products left in stock', 500);
+                    }
+                } else {
+                    // Handle the case where the product does not exist
+                    return new Response('Product not found', 404);
+                }
             }
-
+    
+            // If all products are successfully sold, return a success response
             if (count($productsArray) === count($completed)) {
                 return new Response($completed, 201);
             }
         }
-        return new Response('Cart was not filled', 500);
+    
+        // Return an error response if the sale or product update fails
+        return new Response('Sale could not be completed', 500);
     }
-
+    
     /*
      * Display the specified resource.
      */
