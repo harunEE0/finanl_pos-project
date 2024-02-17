@@ -34,12 +34,12 @@
                                     <option value="{{ $category->category_id }}"> {{ $category->name }}</option> @endforeach 
                                 </select>
                             </div>
-                            <div class="picture">
-    <div class="form-group">
-        <label for="picture">Product Picture</label>
-        <input type="file" class="form-control-file" name="picture">
-    </div>
-</div>
+                                <div class="picture">
+                                    <div class="form-group">
+                                        <label for="picture">Product Picture</label>
+                                        <input type="file" class="form-control-file" name="picture">
+                                    </div>
+                                </div>
 
                             <div class="form-group"> 
                                 <label for="price">Sell Price</label> 

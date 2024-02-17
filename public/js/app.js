@@ -37433,7 +37433,7 @@ function verifyFields(fields) {
   var verificationErrors = [];
 
   if (fields[0].length === 0) {
-    verificationErrors.push('Cart Is Empty - https://mesinkasironline.web.app');
+    verificationErrors.push('');
   }
 
   if (fields[1] === '') {

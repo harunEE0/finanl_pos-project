@@ -39,11 +39,11 @@
                                 </select>
                             </div>
                             <div class="picture">
-    <div class="form-group">
-        <label for="picture">Product Picture</label>
-        <input type="file" class="form-control-file" name="picture">
-    </div>
-</div>
+                                     <div class="form-group">
+                                        <label for="picture">Product Picture</label>
+                                        <input type="file" class="form-control-file" name="picture">
+                                     </div>
+                            </div>
 
                             <div class="form-group"> 
                                 <label for="price">Sell Price</label> 

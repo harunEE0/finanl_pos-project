@@ -1,1 +1,1 @@
-<div class="main-footer col-md-12 no-print text-center fixed-bottom">Read <a class="text-danger" href="https://www.hockeycomputindo.com/2020/09/aplikasi-toko-gratis-download.html">Z-invoice documentation →</a></div>
+<div class="main-footer col-md-12 no-print text-center fixed-bottom">**<a class="text-danger" href="https://www.hockeycomputindo.com/2020/09/aplikasi-toko-gratis-download.html"></a></div>
